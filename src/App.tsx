@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 export default function App(): JSX.Element {
   return (
@@ -32,5 +32,5 @@ export default function App(): JSX.Element {
         <small>© {new Date().getFullYear()} Hai Ho</small>
       </footer>
     </div>
-  )
+  );
 }
