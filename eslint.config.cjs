@@ -10,13 +10,13 @@ module.exports = [
       parserOptions: {
         ecmaVersion: 2024,
         sourceType: 'module',
-        ecmaFeatures: { jsx: true }
-      }
+        ecmaFeatures: { jsx: true },
+      },
     },
     plugins: {
       '@typescript-eslint': require('@typescript-eslint/eslint-plugin'),
       react: require('eslint-plugin-react'),
-      prettier: require('eslint-plugin-prettier')
+      prettier: require('eslint-plugin-prettier'),
     },
     rules: {
       // Integrate Prettier formatting as an ESLint rule
@@ -30,15 +30,15 @@ module.exports = [
           singleQuote: true,
           trailingComma: 'es5',
           bracketSpacing: true,
-          arrowParens: 'always'
-        }
+          arrowParens: 'always',
+        },
       ],
-      'react/react-in-jsx-scope': 'off'
+      'react/react-in-jsx-scope': 'off',
     },
     settings: {
       react: {
-        version: 'detect'
-      }
-    }
-  }
-]
+        version: 'detect',
+      },
+    },
+  },
+];

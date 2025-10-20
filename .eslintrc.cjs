@@ -4,26 +4,26 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2024,
     sourceType: 'module',
-    ecmaFeatures: { jsx: true }
+    ecmaFeatures: { jsx: true },
   },
   env: {
     browser: true,
     es2021: true,
-    node: true
+    node: true,
   },
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
-    'prettier'
+    'prettier',
   ],
   plugins: ['react', '@typescript-eslint'],
   settings: {
     react: {
-      version: 'detect'
-    }
+      version: 'detect',
+    },
   },
   rules: {
-    'react/react-in-jsx-scope': 'off'
-  }
-}
+    'react/react-in-jsx-scope': 'off',
+  },
+};
