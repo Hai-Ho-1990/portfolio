@@ -1,0 +1,17 @@
+{
+  // Treat source CSS files as PostCSS so @tailwind/@apply are understood
+  "files.associations": {
+    "src/**/*.css": "postcss"
+  },
+
+  // Silently ignore unknown at-rules from the built-in CSS linter
+  "css.lint.unknownAtRules": "ignore",
+  "scss.lint.unknownAtRules": "ignore",
+
+  // If you have the Tailwind CSS IntelliSense extension, make sure it
+  // recognizes css files (extension will provide completions/hover)
+  "tailwindCSS.includeLanguages": {
+    "css": "css",
+    "postcss": "css"
+  }
+}

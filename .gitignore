@@ -58,8 +58,8 @@ typings/
 # Output of 'npm pack'
 *.tgz
 
-# IDEs and editors
 .vscode/
+.vscode/settings.json
 .idea/
 *.sublime-workspace
 *.sublime-project
