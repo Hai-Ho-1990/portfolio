@@ -1,28 +1,23 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
-import Nav from './components/Nav';
+
 import Home from './pages/Home';
 import About from './pages/About';
 import Projects from './pages/Projects';
 import NotFound from './pages/NotFound';
+import HeaderComponent from './components/header/headerComponent';
+import FooterComponent from './components/footer/footerComponent';
 
 function Layout(): JSX.Element {
   return (
     <div className="app">
-      <header className="hero">
-        <h1>Hai Ho — Web Portfolio</h1>
-        <p>Frontend developer • React • TypeScript</p>
-      </header>
-
-      <Nav />
+      <HeaderComponent />
 
       <main className="container">
         <Outlet />
       </main>
 
-      <footer className="footer">
-        <small>© {new Date().getFullYear()} Hai Ho</small>
-      </footer>
+      <FooterComponent />
     </div>
   );
 }
