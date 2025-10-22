@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 export default function NotFound(): JSX.Element {
   return (
@@ -6,5 +6,5 @@ export default function NotFound(): JSX.Element {
       <h2>Not Found</h2>
       <p>The requested page was not found.</p>
     </section>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 export default function Home(): JSX.Element {
   return (
@@ -6,5 +6,5 @@ export default function Home(): JSX.Element {
       <h2>Welcome</h2>
       <p>This is the home page. Replace with your content.</p>
     </section>
-  )
+  );
 }

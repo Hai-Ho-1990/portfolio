@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 export default function Projects(): JSX.Element {
   return (
@@ -6,5 +6,5 @@ export default function Projects(): JSX.Element {
       <h2>Projects</h2>
       <p>List of projects goes here.</p>
     </section>
-  )
+  );
 }
