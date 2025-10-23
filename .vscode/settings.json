@@ -6,7 +6,7 @@
 
   // Silently ignore unknown at-rules from the built-in CSS linter
   "css.lint.unknownAtRules": "ignore",
-  "scss.lint.unknownAtRules": "ignore",
+  "scss.lint.unknownAtRules": "ignore"
 
   // Tailwind CSS IntelliSense settings removed; keep PostCSS association
 }

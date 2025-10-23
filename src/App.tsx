@@ -10,14 +10,13 @@ import FooterComponent from './components/footer/footerComponent';
 
 function Layout(): JSX.Element {
   return (
-    <div className="app">
-      <HeaderComponent />
+    <div className="app ">
+      <main className="container ">
+        <HeaderComponent />
 
-      <main className="container">
-        <Outlet />
+        <Projects />
+        <FooterComponent />
       </main>
-
-      <FooterComponent />
     </div>
   );
 }
