@@ -1,21 +1,16 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 
-import Home from './pages/Home';
-import About from './pages/About';
+import About from './components/About';
 import Projects from './pages/Projects';
 import NotFound from './pages/NotFound';
-import HeaderComponent from './components/header/headerComponent';
-import FooterComponent from './components/footer/footerComponent';
+import HomePage from './pages/HomePage';
 
 function Layout(): JSX.Element {
   return (
     <div className="app ">
       <main className="container ">
-        <HeaderComponent />
-
-        <Projects />
-        <FooterComponent />
+        <HomePage />
       </main>
     </div>
   );
@@ -26,7 +21,6 @@ export default function App(): JSX.Element {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="projects" element={<Projects />} />
           <Route path="*" element={<NotFound />} />

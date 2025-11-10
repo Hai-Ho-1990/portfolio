@@ -1,8 +1,8 @@
 @import 'tailwindcss';
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
 
 :root {
-  --bg: #f7f7fb;
+  --bg: #efefef;
   --accent: #0b5cff;
   --text: #202124;
 }
@@ -21,11 +21,67 @@ body {
   flex-direction: column;
 }
 
-section {
-  margin-bottom: 2rem;
-}
 .footer {
   padding: 1rem;
   text-align: center;
-  color: #666;
+  color: #ffffff;
+}
+
+/* @keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.scroll-container {
+  width: 100%;
+  animation: scroll 20s linear infinite;
+}
+
+.scroll-container:hover {
+  animation-play-state: paused;
+}
+
+.scroll-content {
+  min-width: max-content;
+} */
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.scroll-container {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.scroll-content {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  width: max-content;
+  animation: scroll 30s linear infinite;
+  flex-shrink: 0;
+}
+
+.scroll-content:hover {
+  animation-play-state: paused;
 }

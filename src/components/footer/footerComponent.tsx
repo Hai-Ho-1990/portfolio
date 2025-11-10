@@ -2,9 +2,9 @@ import React from 'react';
 
 function footerComponent() {
   return (
-    <div>
+    <section className="footer w-full ">
       <small>© {new Date().getFullYear()} Hai Ho</small>
-    </div>
+    </section>
   );
 }
 
