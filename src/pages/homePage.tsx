@@ -66,6 +66,7 @@ import { ReactLenis, useLenis } from 'lenis/react';
 import HeaderComponent from '../components/header/headerComponent';
 import About from '../components/About';
 import Works from '../components/works/WorksComponent';
+import BlogComponent from '../components/BlogComponent';
 import FooterComponent from '../components/footer/footerComponent';
 
 export default function HorizontalScroll(): JSX.Element {
@@ -124,6 +125,9 @@ export default function HorizontalScroll(): JSX.Element {
             <Works />
           </ul>
         </section>
+
+        {/* BLOG */}
+        <BlogComponent />
 
         {/* FOOTER */}
         <FooterComponent />
