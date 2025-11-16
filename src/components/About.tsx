@@ -4,8 +4,8 @@ import ScrollFloat from './animations/ScrollFloat';
 
 function About() {
   return (
-    <section className="about w-full h-screen flex flex-col justify-center  bg-[#fafafa] text-black">
-      <h1 className=" tracking-tighter text-center">about me</h1>
+    <section className="about w-screen h-screen flex flex-col justify-center  bg-[#fafafa] text-black">
+      <h1 className=" tracking-tighter text-center items-center">about me</h1>
 
       <p className="mt-4 text-2xl  text-center max-w-2xl w-[70%] self-center ">
         {/* <ScrollFloat
@@ -19,7 +19,7 @@ function About() {
         experiences.
         {/* </ScrollFloat> */}
       </p>
-      <img src={aboutMeImg} alt="About Me" className="self-center pt-10" />
+      <img src={aboutMeImg} alt="About Me" className="self-center pt-10 " />
     </section>
   );
 }

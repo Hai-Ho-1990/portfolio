@@ -7,7 +7,7 @@ import CompetenceComponent from '../CompetenceComponent';
 
 function HeaderComponent() {
   return (
-    <section className="relative w-full h-screen flex flex-col justify-between overflow-hidden bg-[#efefef]">
+    <section className="relative w-screen h-screen flex flex-col justify-between overflow-hidden bg-[#efefef]">
       {/* Bakgrundsanimation */}
       {/* <div className="absolute inset-0 -z-10 ">
         <Silk speed={5} scale={1} color="#C4C4C4" noiseIntensity={1.5} rotation={0} />

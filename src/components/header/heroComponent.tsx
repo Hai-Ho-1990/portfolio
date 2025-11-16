@@ -10,7 +10,7 @@ export default function HeroComponent() {
         src={profileImg}
         alt="Profile"
       />
-      <div className="hero-text w-[80%] flex flex-col justify-center items-center text-center pt-4">
+      <div className="hero-text w-screen flex flex-col justify-center items-center text-center pt-4">
         <h2 className="text-3xl ">
           Junior Frontend Developer. Building{' '}
           <RotatingText className="" words={['#digitalProducts', '#brands', '#experiences']} />.

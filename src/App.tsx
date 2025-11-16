@@ -8,7 +8,7 @@ import HomePage from './pages/HomePage';
 
 function Layout(): JSX.Element {
   return (
-    <div className="app ">
+    <div className="app bg-black ">
       <main className="container ">
         <HomePage />
       </main>

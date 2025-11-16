@@ -7,8 +7,8 @@ export const useSmoothScroll = () => {
 
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // mjuk easing
+      duration: 1.0, // något kortare = mer responsivt
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       wheelMultiplier: 1,
       touchMultiplier: 2,
@@ -17,27 +17,24 @@ export const useSmoothScroll = () => {
 
     lenisRef.current = lenis;
 
-    let rafId: number | null = null;
+    // 🔄 Viktigt: uppdatera onScroll för externa animationer
+    lenis.on('scroll', ({ scroll, limit }) => {
+      // exempel: uppdatera GSAP ScrollTrigger / Motion scroll
+      // ScrollTrigger.update();
+      // (Motion scroll läser automatiskt window.scrollY, så behövs ej extra)
+    });
 
-    function raf(time: number) {
-      // prefer using the ref so we don't call into a destroyed instance
-      if (!lenisRef.current) return;
-      lenisRef.current.raf(time);
+    let rafId: number;
+    const raf = (time: number) => {
+      lenis.raf(time);
       rafId = requestAnimationFrame(raf);
-    }
-
+    };
     rafId = requestAnimationFrame(raf);
 
     return () => {
-      if (rafId !== null) {
-        cancelAnimationFrame(rafId);
-        rafId = null;
-      }
-      // destroy lenis if it still exists
-      if (lenisRef.current) {
-        lenisRef.current.destroy();
-        lenisRef.current = null;
-      }
+      cancelAnimationFrame(rafId);
+      lenis.destroy();
+      lenisRef.current = null;
     };
   }, []);
 
