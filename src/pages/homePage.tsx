@@ -82,23 +82,21 @@ export default function HorizontalScroll(): JSX.Element {
     const slides = ul.querySelectorAll('li');
     const slideCount = slides.length;
 
-    // Gör sektionen lika hög som antal slides (så att man kan scrolla genom alla)
-    section.style.height = `${slideCount * 100}vh`;
+    // Lägg till 1 extra viewport så sista sliden hinner scrollas ut helt
+    section.style.height = `${slideCount * 100 + 100}vh`;
 
     const update = ({ scroll }: { scroll: number }) => {
-      const sectionTop = section.offsetTop;
+      const sectionRect = section.getBoundingClientRect();
+      const sectionTop = sectionRect.top + scroll; // KORREKT med Lenis
       const sectionHeight = section.offsetHeight;
       const viewportHeight = window.innerHeight;
 
-      // 🎯 Starta när sektionen når toppen av viewporten
       const start = sectionTop;
       const end = sectionTop + sectionHeight - viewportHeight;
 
-      // Begränsa scrollen till sektionens intervall
       const clamped = Math.min(Math.max(scroll, start), end);
-      const progress = (clamped - start) / (end - start); // 0–1 bara inom sektionen
+      const progress = (clamped - start) / (end - start);
 
-      // Flytta horisontellt utifrån progress
       const translateX = -progress * (slideCount - 1) * 100;
       ul.style.transform = `translateX(${translateX}vw)`;
     };
@@ -120,7 +118,7 @@ export default function HorizontalScroll(): JSX.Element {
         <About />
 
         {/* HORIZONTAL SCROLL */}
-        <section ref={sectionRef} data-scroll className="relative">
+        <section ref={sectionRef} data-scroll className="relative min-h-screen">
           <ul ref={ulRef} className="flex sticky top-0 left-0 h-screen will-change-transform">
             <Works />
           </ul>

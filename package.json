@@ -1,14 +1,14 @@
 {
   "name": "portfolio",
   "version": "1.0.0",
-  "type": "module",
+  "type": "commonjs",
   "main": "index.js",
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "tsc -p tsconfig.backend.json",
     "preview": "vite preview",
-    "start": "vite",
+    "start": "node dist/server.js",
     "typecheck": "tsc --noEmit",
     "lint": "eslint --ext .ts,.tsx src",
     "lint:fix": "eslint --ext .ts,.tsx src --fix",
@@ -19,10 +19,16 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@fortawesome/free-brands-svg-icons": "^7.1.0",
+    "@fortawesome/react-fontawesome": "^3.1.1",
     "@react-three/fiber": "^8.18.0",
     "@studio-freight/lenis": "^1.0.42",
+    "@supabase/postgrest-js": "^2.81.1",
+    "@supabase/supabase-js": "^2.81.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
     "gsap": "^3.13.0",
     "lenis": "^1.3.14",
     "lucide-react": "^0.552.0",
@@ -35,7 +41,8 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
-    "@tailwindcss/postcss": "^4.1.15",
+    "@tailwindcss/postcss": "^4.1.17",
+    "@types/express": "^5.0.5",
     "@types/node": "^24.9.2",
     "@types/react": "^18.2.23",
     "@types/react-dom": "^18.2.7",
@@ -52,7 +59,8 @@
     "postcss": "^8.5.6",
     "prettier": "^3.6.2",
     "tailwindcss": "^4.1.16",
-    "typescript": "^5.3.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
     "vite": "^7.1.10"
   }
 }
