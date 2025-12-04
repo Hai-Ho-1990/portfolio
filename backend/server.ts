@@ -10,7 +10,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // ✅ Middleware
-app.use(cors({ origin: 'http://localhost:5174' })); // CORS för frontend
+app.use(cors({ origin: 'https://portfolio-pwex.onrender.com' }));
+// CORS för frontend
 app.use(express.json({ limit: '1mb' }));
 
 // Supabase setup
