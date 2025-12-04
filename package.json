@@ -8,7 +8,7 @@
     "dev": "vite",
     "build": "vite build && tsc -p tsconfig.backend.json",
     "preview": "vite preview",
-    "start": "node dist/server.js",
+    "start": "node start.js",
     "typecheck": "tsc --noEmit",
     "lint": "eslint --ext .ts,.tsx src",
     "lint:fix": "eslint --ext .ts,.tsx src --fix",
