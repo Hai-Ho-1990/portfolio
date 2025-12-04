@@ -153,7 +153,7 @@ export default function Works() {
               {project.content || 'Project description coming soon...'}
             </p>
 
-            <div className="flex  space-x-4 mt-6">{project.icons}</div>
+            <div className="flex  space-x-4 mt-10">{project.icons}</div>
           </li>
           {/* PROJECT PAGE */}
           <li className="w-screen h-screen shrink-0 relative flex items-end justify-center bg-black">

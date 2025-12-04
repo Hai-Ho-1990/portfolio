@@ -1,14 +1,19 @@
 import express, { Request, Response } from 'express';
 import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
+import cors from 'cors';
 
 dotenv.config();
 
+// ✅ Deklarera app först
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// ✅ Middleware
+app.use(cors({ origin: 'http://localhost:5174' })); // CORS för frontend
 app.use(express.json({ limit: '1mb' }));
 
+// Supabase setup
 const SUPABASE_URL = (process.env.SUPABASE_URL || '').trim();
 const SUPABASE_SERVICE_ROLE_KEY = (process.env.SUPABASE_SERVICE_ROLE_KEY || '').trim();
 
@@ -17,26 +22,37 @@ if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
   process.exit(1);
 }
 
-// ✅ Använd createClient istället för PostgrestClient direkt
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
-app.post('/api/postInsight', async (req: Request, res: Response) => {
-  try {
-    const { content } = req.body;
+// ✅ Exempel GET endpoint
+app.get('/api/daily', async (_req, res) => {
+  const { data, error } = await supabase
+    .from('daily_reasons')
+    .select('*')
+    .order('id', { ascending: false }) // viktig!
+    .limit(1)
+    .maybeSingle(); // undviker fel om tabellen är tom
 
-    if (!content) return res.status(400).json({ error: 'Missing content' });
-
-    // Insert till Supabase (UTF-8 stöds automatiskt)
-    const { data, error } = await supabase.from('insights').insert([{ content }]).select();
-
-    if (error) return res.status(500).json({ error: error.message });
-
-    res.status(200).json({ success: true, inserted: data });
-  } catch (err: any) {
-    res.status(500).json({ error: err.message });
+  if (error) {
+    return res.status(500).json({ success: false, error: error.message });
   }
+
+  if (!data) {
+    return res.json({
+      success: true,
+      reason: null,
+      message: 'No reason found in database',
+    });
+  }
+
+  return res.json({
+    success: true,
+    reason: data.reason,
+    generated_at: data.generated_at,
+  });
 });
 
+// Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
