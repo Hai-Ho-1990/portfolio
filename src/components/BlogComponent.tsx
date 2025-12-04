@@ -6,7 +6,7 @@ export default function DailyReason() {
 
   // Hämta dagens anledning
   useEffect(() => {
-    fetch('http://localhost:3000/api/daily')
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/daily`)
       .then((res) => res.json())
       .then((data) => setReason(data.reason))
       .catch(() => setReason('No reason available'));
