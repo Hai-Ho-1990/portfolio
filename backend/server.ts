@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import path from 'path';
 
 dotenv.config();
 
@@ -13,6 +14,10 @@ const PORT = process.env.PORT || 3000;
 app.use(cors({ origin: 'https://portfolio-pwex.onrender.com' }));
 // CORS för frontend
 app.use(express.json({ limit: '1mb' }));
+
+// ✅ Serve static Vite frontend
+const distPath = path.resolve(__dirname, '../dist');
+app.use(express.static(distPath));
 
 // Supabase setup
 const SUPABASE_URL = (process.env.SUPABASE_URL || '').trim();
@@ -53,7 +58,13 @@ app.get('/api/daily', async (_req, res) => {
   });
 });
 
+// ✅ SPA fallback: serve index.html for all non-API routes
+app.get('*', (_req, res) => {
+  res.sendFile(path.join(distPath, 'index.html'));
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
