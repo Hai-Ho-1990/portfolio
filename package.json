@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vite build && tsc -p tsconfig.backend.json",
+    "build": "vite build && tsc -p backend/tsconfig.json",
     "preview": "vite preview",
     "start": "node dist/server.js",
     "typecheck": "tsc --noEmit",
