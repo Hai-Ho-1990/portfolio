@@ -1,39 +1,51 @@
 import React, { useEffect, useState } from 'react';
 
-export default function DailyReason() {
-  const [reason, setReason] = useState('');
-  const [timeLeft, setTimeLeft] = useState('');
+type Reason = {
+  id?: number | string;
+  reason?: string;
+  generated_at?: string;
+};
 
-  // Hämta dagens anledning
+export default function BlogComponent() {
+  const [items, setItems] = useState<Reason[] | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/daily`)
-      .then((res) => res.json())
-      .then((data) => setReason(data.reason))
-      .catch(() => setReason('No reason available'));
+    const backend = import.meta.env.VITE_BACKEND_URL || '';
+    const url = backend ? `${backend}/api/reasons` : `/api/reasons`;
+
+    fetch(url)
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then((data) => {
+        if (data && data.success) setItems(data.reasons || []);
+        else throw new Error(data?.error || 'Unexpected response');
+      })
+      .catch((err) => setError(err.message || String(err)))
+      .finally(() => setLoading(false));
   }, []);
 
-  // Nedräkning till nästa dag
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const now = new Date();
-      const nextMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
-      const diff = nextMidnight.getTime() - now.getTime();
-      const hours = Math.floor(diff / 1000 / 60 / 60);
-      const minutes = Math.floor((diff / 1000 / 60) % 60);
-      const seconds = Math.floor((diff / 1000) % 60);
-
-      const format = (num: number) => String(num).padStart(2, '0');
-      setTimeLeft(`${format(hours)}h ${format(minutes)}m ${format(seconds)}s`);
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
+  if (loading) return <div className="p-6">Loading reasons…</div>;
+  if (error) return <div className="p-6 text-red-600">Error: {error}</div>;
+  if (!items || items.length === 0) return <div className="p-6">No reasons found.</div>;
 
   return (
     <div className="w-screen h-screen flex flex-col justify-center items-center bg-white text-black">
       <h1>1001 Reasons You Should Hire Me</h1>
-      <h2 className="mt-4 text-lg">{reason || 'No reason available'}</h2>
-      <p className="mt-2 text-sm text-gray-500">New reason in: {timeLeft}</p>
+
+      <ul className="space-y-4">
+        {items.map((r) => (
+          <li key={r.id || r.generated_at} className="border rounded p-4">
+            <div className="text-lg">{r.reason || 'No reason'}</div>
+            <div className="text-xs text-gray-500 mt-3">
+              {r.generated_at ? new Date(r.generated_at).toLocaleString() : ''}
+            </div>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

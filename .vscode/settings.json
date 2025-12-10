@@ -1,12 +1,29 @@
 {
-  // Treat source CSS files as PostCSS so @tailwind/@apply are understood
+  "[typescript]": {
+    "editor.defaultFormatter": "denoland.vscode-deno"
+  },
+  "css.lint.unknownAtRules": "ignore",
+  "deno.enablePaths": [
+    "supabase/functions"
+  ],
+  "deno.lint": true,
+  "deno.unstable": [
+    "bare-node-builtins",
+    "byonm",
+    "sloppy-imports",
+    "unsafe-proto",
+    "webgpu",
+    "broadcast-channel",
+    "worker-options",
+    "cron",
+    "kv",
+    "ffi",
+    "fs",
+    "http",
+    "net"
+  ],
   "files.associations": {
     "src/**/*.css": "postcss"
   },
-
-  // Silently ignore unknown at-rules from the built-in CSS linter
-  "css.lint.unknownAtRules": "ignore",
   "scss.lint.unknownAtRules": "ignore"
-
-  // Tailwind CSS IntelliSense settings removed; keep PostCSS association
 }
