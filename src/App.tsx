@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import About from './components/About';
 import Projects from './pages/Projects';
 import NotFound from './pages/NotFound';
-import HomePage from './pages/temp';
+import HomePage from './pages/HomePage';
 
 function Layout(): JSX.Element {
   return (
