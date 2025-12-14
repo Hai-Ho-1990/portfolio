@@ -1,51 +1,140 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import SplitText from './animations/SplitText';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+import backgroundThree from '../assets/background4.png';
+
+gsap.registerPlugin(ScrollTrigger);
 
 type Reason = {
-  id?: number | string;
-  reason?: string;
-  generated_at?: string;
+  id: number;
+  reason: string;
+  generated_at: string;
 };
 
 export default function BlogComponent() {
-  const [items, setItems] = useState<Reason[] | null>(null);
+  const [items, setItems] = useState<Reason[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [timeLeft, setTimeLeft] = useState('');
 
+  const listRef = useRef<HTMLUListElement>(null);
+
+  // ======================
+  // Fetch API
+  // ======================
   useEffect(() => {
     const backend = import.meta.env.VITE_BACKEND_URL || '';
     const url = backend ? `${backend}/api/reasons` : `/api/reasons`;
 
     fetch(url)
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
+      .then((r) => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json();
       })
-      .then((data) => {
-        if (data && data.success) setItems(data.reasons || []);
-        else throw new Error(data?.error || 'Unexpected response');
+      .then((data: { success: boolean; reasons: Reason[] }) => {
+        if (data.success) setItems(data.reasons);
       })
-      .catch((err) => setError(err.message || String(err)))
+      .catch((err) => {
+        console.error('Failed to fetch reasons:', err);
+      })
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <div className="p-6">Loading reasons…</div>;
-  if (error) return <div className="p-6 text-red-600">Error: {error}</div>;
-  if (!items || items.length === 0) return <div className="p-6">No reasons found.</div>;
+  // ======================
+  // Countdown to midnight
+  // ======================
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date();
+      const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+
+      const diff = Math.max(0, midnight.getTime() - now.getTime());
+
+      const h = String(Math.floor(diff / 1000 / 60 / 60)).padStart(2, '0');
+      const m = String(Math.floor((diff / 1000 / 60) % 60)).padStart(2, '0');
+      const s = String(Math.floor((diff / 1000) % 60)).padStart(2, '0');
+
+      setTimeLeft(`${h}h ${m}m ${s}s`);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // ======================
+  // GSAP animation (with cleanup)
+  // ======================
+  useEffect(() => {
+    if (!listRef.current || items.length === 0) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        'li',
+        {
+          opacity: 0,
+          y: 40,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: 'power3.out',
+          stagger: 0.12,
+          scrollTrigger: {
+            trigger: listRef.current,
+            start: 'top 85%',
+            once: true,
+          },
+        }
+      );
+    }, listRef);
+
+    // ✅ CLEANUP
+    return () => ctx.revert();
+  }, [items]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-gray-500">Loading…</div>
+    );
+  }
 
   return (
-    <div className="w-screen h-screen flex flex-col justify-center items-center bg-white text-black">
-      <h1>1001 Reasons You Should Hire Me</h1>
+    <div className="min-h-screen w-screen bg-white text-black flex flex-col items-center pt-10 pb-20 justify-between">
+      <h1 className="text-xs mb-6 text-gray-500">1001 Reasons You Should Hire Me</h1>
 
-      <ul className="space-y-4">
+      <ul ref={listRef} className="w-full max-w-3xl">
         {items.map((r) => (
-          <li key={r.id || r.generated_at} className="border rounded p-4">
-            <div className="text-lg">{r.reason || 'No reason'}</div>
-            <div className="text-xs text-gray-500 mt-3">
-              {r.generated_at ? new Date(r.generated_at).toLocaleString() : ''}
-            </div>
+          <li key={r.id} className="p-8 m-6 text-center bg-white ">
+            <div className="text-md font-bold mb-6 text-gray-500"># {r.id}</div>
+
+            <SplitText
+              text={r.reason}
+              className="text-md text-center leading-7"
+              splitType="lines"
+              delay={80}
+              duration={0.8}
+              from={{ opacity: 0, y: 60 }}
+              to={{ opacity: 1, y: 0 }}
+              textAlign="center"
+            />
+
+            <p className="text-xs text-gray-500 mt-4">New reason generated in {timeLeft}</p>
           </li>
         ))}
       </ul>
+
+      <div className="relative w-full h-[35vh] overflow-hidden mt-10">
+        <img
+          src={backgroundThree}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover z-0 brightness-110"
+        />
+      </div>
+
+      <p className="text-xs text-gray-500 w-[80%] mt-10 text-center">
+        *Reasons generated by OpenAI based on my personal skills & experiences.
+      </p>
     </div>
   );
 }

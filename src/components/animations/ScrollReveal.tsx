@@ -104,7 +104,7 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
           scrollTrigger: {
             trigger: el,
             scroller,
-            start: 'top bottom-=20%',
+            start: 'top bottom-=50%',
             end: wordAnimationEnd,
             scrub: true,
           },
@@ -132,11 +132,9 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
   ]);
 
   return (
-    <h2 ref={containerRef} className={`my-5 ${containerClassName}`}>
-      <p className={`text-[clamp(1.6rem,4vw,3rem)] leading-normal font-semibold ${textClassName}`}>
-        {splitText}
-      </p>
-    </h2>
+    <div ref={containerRef} className={`my-5 ${containerClassName}`}>
+      <div className={textClassName}>{splitText}</div>
+    </div>
   );
 };
 

@@ -42,7 +42,33 @@ async function callOpenAI(prompt: string) {
 
 // Funktion som genererar dagens anledning
 async function generateDailyReason() {
-  const prompt = `You are an expert career coach for junior frontend developers. Generate 1 concise, positive sentence explaining why a recruiter should hire Hai Ho as a Junior Frontend Developer.`;
+  const prompt = `You are an expert career copywriter specializing in creating persuasive, warm, and personal one-sentence pitches for junior frontend developers.
+
+Your task is to generate ONE unique, concise sentence in English explaining why a recruiter should hire Hai Ho as a Junior Frontend Developer.
+
+Use the following personal profile to shape the tone and content:
+
+- Finishing the final year of a Frontend Developer program at IT-Högskolan in Stockholm; graduating June 2026.
+- Skilled in HTML, CSS, JavaScript, React, Next.js, TypeScript, Tailwind, Git, and API integration.
+- Passionate about creative projects, UI design, and improving user experience.
+- Experience building full projects from idea to completion (e.g., an AI-powered recorder app with transcription).
+- Reliable, responsible, honest, and someone others can depend on.
+- Strong soft skills: problem-solving, communication, creativity, accountability, adaptability.
+- Team player who listens, contributes ideas, and supports others; experienced with Agile teamwork.
+- Motivated by growth, curiosity, and creating meaningful digital experiences.
+- Comfortable with Figma, VSCode, Jira, and modern development tools.
+- Targeting product companies, startups, and agencies.
+
+Tone & style requirements:
+1. One single sentence.
+2. Highly personal and human, not generic.
+3. Persuasive and confidence-building, yet humble and sincere.
+4. Should make the recruiter feel: “This is a junior developer we want on our team.”
+5. Reflect Hai’s personality, passion, responsibility, and drive.
+6. Tailored to what companies commonly look for in junior frontend developers today.
+
+Do NOT write an example — generate one new, original sentence each time the prompt is used.
+`;
 
   let reason = 'Hai Ho combines curiosity with a fast-learning mindset.'; // fallback
   try {

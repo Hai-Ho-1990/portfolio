@@ -1,4 +1,6 @@
-import React, { useEffect, useMemo, useRef, ReactNode, RefObject } from 'react';
+'use client';
+
+import React, { useEffect, useRef, ReactNode } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -6,81 +8,94 @@ gsap.registerPlugin(ScrollTrigger);
 
 interface ScrollFloatProps {
   children: ReactNode;
-  scrollContainerRef?: RefObject<HTMLElement>;
-  containerClassName?: string;
-  textClassName?: string;
   animationDuration?: number;
   ease?: string;
   scrollStart?: string;
   scrollEnd?: string;
   stagger?: number;
+  containerClassName?: string;
 }
 
-const ScrollFloat: React.FC<ScrollFloatProps> = ({
+export default function ScrollFloat({
   children,
-  scrollContainerRef,
-  containerClassName = '',
-  textClassName = '',
   animationDuration = 1,
   ease = 'back.inOut(2)',
-  scrollStart = 'center bottom+=50%',
-  scrollEnd = 'bottom bottom-=40%',
-  stagger = 0.03,
-}) => {
-  const containerRef = useRef<HTMLHeadingElement>(null);
+  scrollStart = 'center bottom+=40%',
+  scrollEnd = 'bottom bottom-=20%',
+  stagger = 0.05,
+  containerClassName = '',
+}: ScrollFloatProps) {
+  const ref = useRef<HTMLDivElement>(null);
 
-  const splitText = useMemo(() => {
-    const text = typeof children === 'string' ? children : '';
-    return text.split('').map((char, index) => (
-      <span className="inline-block word" key={index}>
-        {char === ' ' ? '\u00A0' : char}
-      </span>
-    ));
-  }, [children]);
+  // --- Recursively wrap text nodes in span ---
+  const wrapTextNodes = (node: ReactNode): ReactNode => {
+    if (typeof node === 'string') {
+      return node.split('').map((char, i) => (
+        <span key={i} className="float-char inline-block">
+          {char === ' ' ? '\u00A0' : char}
+        </span>
+      ));
+    }
 
+    if (Array.isArray(node)) {
+      return node.map((child, i) => (
+        <React.Fragment key={i}>{wrapTextNodes(child)}</React.Fragment>
+      ));
+    }
+
+    if (React.isValidElement(node)) {
+      return React.cloneElement(node, {
+        ...node.props,
+        children: wrapTextNodes(node.props.children),
+      });
+    }
+
+    return node;
+  };
+
+  const processed = wrapTextNodes(children);
+
+  // --- GSAP animation ---
   useEffect(() => {
-    const el = containerRef.current;
+    const el = ref.current;
     if (!el) return;
 
-    const scroller =
-      scrollContainerRef && scrollContainerRef.current ? scrollContainerRef.current : window;
+    const chars = el.querySelectorAll('.float-char');
 
-    const charElements = el.querySelectorAll('.inline-block');
-
-    gsap.fromTo(
-      charElements,
-      {
-        willChange: 'opacity, transform',
-        opacity: 0,
-        yPercent: 120,
-        scaleY: 2.3,
-        scaleX: 0.7,
-        transformOrigin: '50% 0%',
-      },
-      {
-        duration: animationDuration,
-        ease: ease,
-        opacity: 1,
-        yPercent: 0,
-        scaleY: 1,
-        scaleX: 1,
-        stagger: stagger,
-        scrollTrigger: {
-          trigger: el,
-          scroller,
-          start: scrollStart,
-          end: scrollEnd,
-          scrub: true,
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        chars,
+        {
+          opacity: 0,
+          yPercent: 100,
+          scaleY: 2,
+          scaleX: 0.7,
+          transformOrigin: '50% 0%',
         },
-      }
-    );
-  }, [scrollContainerRef, animationDuration, ease, scrollStart, scrollEnd, stagger]);
+        {
+          opacity: 1,
+          yPercent: 0,
+          scaleY: 1,
+          scaleX: 1,
+          ease,
+          duration: animationDuration,
+          stagger,
+          scrollTrigger: {
+            trigger: el,
+            start: scrollStart,
+            end: scrollEnd,
+            scrub: true,
+          },
+        }
+      );
+    }, el);
+
+    return () => ctx.revert();
+  }, [animationDuration, ease, scrollStart, scrollEnd, stagger]);
 
   return (
-    <h2 ref={containerRef} className={`my-5 overflow-hidden ${containerClassName}`}>
-      <p>{splitText}</p>
-    </h2>
+    <div ref={ref} className={`my-5 ${containerClassName}`}>
+      {processed}
+    </div>
   );
-};
-
-export default ScrollFloat;
+}

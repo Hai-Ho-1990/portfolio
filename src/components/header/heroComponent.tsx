@@ -18,7 +18,7 @@ export default function HeroComponent() {
       </div>
       <div className="pt-6">
         <button
-          className="bg-black text-white py-2 px-9 rounded-2xl text-[0.6rem] shadow-lg"
+          className="bg-black text-white py-2 px-9 rounded-2xl text-[0.6rem] shadow-[0_12px_20px_-4px_rgba(0,0,0,0.86)]"
           onClick={() => {
             /* Add handler */
           }}
